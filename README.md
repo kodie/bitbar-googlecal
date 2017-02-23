@@ -40,9 +40,9 @@ These are some settings that you can change by setting them in your `~/.bitbarrc
 
 * `days` - The number of days (including today) to display events for
   * Default: `7`
-  * Can be set to `false` to display events up to `limit` regardless of the day.
+  * Can be set to `false` to display events up to `limit` regardless of the day
 
-* `expandEvents` - Whether to show events that span multiple days on each day.
+* `expandEvents` - Whether to show events that span multiple days on each day
   * Default: `true`
 
 * `limit` - The max number of events to display
