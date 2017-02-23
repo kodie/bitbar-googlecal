@@ -148,6 +148,7 @@ function getNewToken() {
 
   var server = http.createServer(function(request, response) {
     var code = request.url.match(/code=([^&]*)/);
+    var msg = '';
 
     if (code) {
       code = code.pop();
@@ -160,11 +161,11 @@ function getNewToken() {
           fs.writeFileSync(cfg.tokenFile, JSON.stringify(token));
           open(`bitbar://refreshPlugin?name=googlecal.*?.js`);
 
-          var msg = 'We\'re all done here! You may now close this window.';
+          msg = 'We\'re all done here! You may now close this window.';
           response.write(msg);
           console.log(msg);
         } else {
-          var msg = 'An error occured while trying to get your code.';
+          msg = 'An error occured while trying to get your code.';
           response.write(msg);
           console.log(msg);
         }
@@ -180,7 +181,7 @@ function getNewToken() {
 
   server.listen(cfg.serverPort);
   console.log('Waiting for code...');
-};
+}
 
 function refreshToken(oauth2Client, cb) {
   oauth2Client.refreshAccessToken(function(error, token) {
@@ -223,13 +224,14 @@ function listEvents(oauth2Client) {
 
         var today = moment().format('L');
         var tomorrow = moment().add(1, 'days').format('L');
+        var dateLimit;
 
         if (cfg.days) {
-          var dateLimit = moment().add((cfg.days - 1), 'days').format('L');
+          dateLimit = moment().add((cfg.days - 1), 'days').format('L');
 
           if (cfg.showEmptyDays) {
-            for (var i = 0; i < cfg.days; i++) {
-              evnts[moment().add(i, 'days').format('L')] = [];
+            for (var x = 0; x < cfg.days; x++) {
+              evnts[moment().add(x, 'days').format('L')] = [];
             }
           }
         }
@@ -247,18 +249,18 @@ function listEvents(oauth2Client) {
           evnts[start].push(event);
 
           if (cfg.expandEvents && start != end) {
-            var d = start;
+            var day = start;
 
-            while (d <= end) {
+            while (day <= end) {
               var me = JSON.parse(JSON.stringify(event));
               var dat = new Date(d.valueOf());
 
               dat.setDate(dat.getDate() + 1);
-              d = dat;
+              day = dat;
 
-              if (cfg.days && d > dateLimit) { break; }
+              if (cfg.days && day > dateLimit) { break; }
 
-              me.date = moment(d).format('L');
+              me.date = moment(day).format('L');
 
               if (!evnts[me.date]) { evnts[me.date] = []; }
               evnts[me.date].push(me);
@@ -286,11 +288,11 @@ function listEvents(oauth2Client) {
           }
 
           if (evnts[d].length) {
-            for (var i = 0; (i < evnts[d].length && e < cfg.limit); i++) {
-              var str = `${evnts[d][i].time} - ${evnts[d][i].summary}`;
+            for (var s = 0; (s < evnts[d].length && s < cfg.limit); s++) {
+              var str = `${evnts[d][s].time} - ${evnts[d][s].summary}`;
 
               if (process.env.BitBar) {
-                str += ` | href=${evnts[d][i].htmlLink}`;
+                str += ` | href=${evnts[d][s].htmlLink}`;
               }
 
               console.log(str);
