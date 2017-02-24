@@ -111,6 +111,10 @@ if (process.env.BitBar) {
   console.log('---');
 }
 
+var npmDeps = 'fs home-config googleapis google-auth-library http moment open';
+var dirHome = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE);
+var dirPlugins = process.argv[1].split('/').slice(0, -1).join('/');
+
 try {
   var cfg = Object.assign({}, defaults, require('home-config').load('.bitbarrc').googlecal);
   var fs = require('fs');
@@ -123,15 +127,16 @@ try {
   var auth = new googleAuth();
   var oauth2Client = new auth.OAuth2(cfg.clientId, cfg.clientSecret, cfg.clientRedirect);
 } catch(e) {
-  console.log(e.message);
+  console.log(`Run Installation | bash="cd ${dirPlugins} && npm install ${npmDeps} && node ${process.argv[1]} getNewToken"`);
   footer();
   process.exit(1);
 }
 
-cfg.tokenFile = cfg.tokenFile.replace('~', (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE));
+cfg.tokenFile = cfg.tokenFile.replace('~', dirHome);
+if (cfg.tokenFile.indexOf('/') < 0) { cfg.tokenFile = dirPlugins + '/' + cfg.tokenFile; }
 
-if (cfg.tokenFile.indexOf('/') < 0) {
-  cfg.tokenFile = process.argv[1].split('/').slice(0, -1).join('/') + '/' + cfg.tokenFile;
+function refresh() {
+  open(`bitbar://refreshPlugin?name=googlecal.*?.js`);
 }
 
 function getNewToken() {
@@ -159,7 +164,7 @@ function getNewToken() {
 
         if (!error) {
           fs.writeFileSync(cfg.tokenFile, JSON.stringify(token));
-          open(`bitbar://refreshPlugin?name=googlecal.*?.js`);
+          refresh();
 
           msg = 'We\'re all done here! You may now close this window.';
           response.write(msg);
@@ -349,6 +354,8 @@ function footer() {
 
 if (process.argv[2] == 'getNewToken') {
   getNewToken();
+} else if (process.argv[2] == 'refresh') {
+  refresh();
 } else {
   run();
 }
