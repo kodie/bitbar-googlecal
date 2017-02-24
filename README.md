@@ -10,13 +10,14 @@ A plugin for [BitBar](https://github.com/matryer/bitbar) that shows your upcomin
 ## Installation
 
 ### via [BitBar CLI](https://github.com/kodie/bitbar-cli)
-1.
 ```
 bitbar install Productivity/googlecal.30m.js
 ```
 
 ### Manually
-1. ```bitbar://openPlugin?title=Google%20Calendar&src=https://raw.githubusercontent.com/kodie/bitbar-googlecal/master/googlecal.30m.js```
+```
+bitbar://openPlugin?title=Google%20Calendar&src=https://raw.githubusercontent.com/kodie/bitbar-googlecal/master/googlecal.30m.js
+```
 
 ## Settings
 These are some settings that you can change by setting them in your `~/.bitbarrc` file:
