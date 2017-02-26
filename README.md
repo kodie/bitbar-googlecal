@@ -11,7 +11,7 @@ A plugin for [BitBar](https://github.com/matryer/bitbar) that shows your upcomin
 
 ### via [BitBar CLI](https://github.com/kodie/bitbar-cli)
 ```
-bitbar install Productivity/googlecal.30m.js
+bitbar install Time/googlecal.30m.js
 ```
 
 ### Manually
