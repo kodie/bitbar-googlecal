@@ -1,5 +1,5 @@
 #!/usr/bin/env /usr/local/bin/node
-/* jshint esversion: 6 */
+/* jshint esversion: 6, loopfunc: true */
 
 /*
 <bitbar.title>Google Calendar</bitbar.title>
@@ -23,9 +23,10 @@ var defaults = {
   days: 7,
   expandEvents: true,
   limit: 25,
-  showAllOfToday: true,
+  showAllOfFirstDay: true,
   showEmptyDays: false,
   serverPort: 3000,
+  startDate: Date.now(),
   timeFormat: 'h:mma',
   tokenFile: '.googlecal.json'
 };
@@ -213,82 +214,80 @@ function refreshToken(oauth2Client, cb) {
 function listEvents(oauth2Client) {
   var calendar = google.calendar('v3');
   var processedCalendars = 0;
-  var evnts = {};
+  var today = moment().format('L');
+  var tomorrow = moment().add(1, 'days').format('L');
+  var start = moment(new Date(cfg.startDate));
+  var dateLimit, evnts = {};
 
-  if(!(cfg.calendarId instanceof Array)) {
-    cfg.calendarId = [ cfg.calendarId ];
+  if (!(cfg.calendarId instanceof Array)) {
+    cfg.calendarId = cfg.calendarId.split(',');
   }
 
-  for(var i = 0 ; i < cfg.calendarId.length ; i++)
-  {
+  if (cfg.days) {
+    dateLimit = moment(start).add((cfg.days - 1), 'days').format('L');
+
+    if (cfg.showEmptyDays) {
+      for (var x = 0; x < cfg.days; x++) {
+        evnts[moment(start).add(x, 'days').format('L')] = [];
+      }
+    }
+  }
+
+  for (var i = 0; i < cfg.calendarId.length; i++) {
     calendar.events.list({
       auth: oauth2Client,
       calendarId: cfg.calendarId[i],
-      timeMin: (cfg.showAllOfToday ? (new Date(moment().format('L'))) : (new Date())).toISOString(),
+      timeMin: (cfg.showAllOfFirstDay ? (new Date(moment(start).format('L'))) : (new Date(moment(start)))).toISOString(),
       maxResults: cfg.limit,
       singleEvents: true,
       orderBy: 'startTime'
     }, function(error, response) {
       processedCalendars++;
+
       if (!error) {
         var events = response.items;
 
         if (events.length) {
-
-          var today = moment().format('L');
-          var tomorrow = moment().add(1, 'days').format('L');
-          var dateLimit;
-
-          if (cfg.days) {
-            dateLimit = moment().add((cfg.days - 1), 'days').format('L');
-
-            if (cfg.showEmptyDays) {
-              for (var x = 0; x < cfg.days; x++) {
-                evnts[moment().add(x, 'days').format('L')] = [];
-              }
-            }
-          }
-
           for (var j = 0; j < events.length; j++) {
             var event = events[j];
-            var start = moment(event.start.dateTime || event.start.date).format('L');
-            var end = moment(event.start.dateTime || event.start.date).format('L');
+            var eventStart = moment(event.start.dateTime || event.start.date).format('L');
+            var eventEnd = moment(event.end.dateTime || event.end.date).format('L');
 
-            if (cfg.days && start > dateLimit) { break; }
+            if (cfg.days && eventStart > dateLimit) { break; }
 
-            if (!evnts[start]) { evnts[start] = []; }
-            event.date = start;
+            if (!evnts[eventStart]) { evnts[eventStart] = []; }
+            event.date = eventStart;
             event.time = moment(event.start.dateTime || event.start.date).format(cfg.timeFormat);
-            evnts[start].push(event);
+            evnts[eventStart].push(event);
 
-            if (cfg.expandEvents && start != end) {
-              var day = start;
+            if (cfg.expandEvents && eventStart != eventEnd) {
+              var day = new Date(eventStart);
 
-              while (day <= end) {
+              while (new Date(day) <= new Date(eventEnd)) {
                 var me = JSON.parse(JSON.stringify(event));
-                var dat = new Date(d.valueOf());
 
-                dat.setDate(dat.getDate() + 1);
-                day = dat;
-
-                if (cfg.days && day > dateLimit) { break; }
-
+                day.setDate(day.getDate() + 1);
                 me.date = moment(day).format('L');
+                me.time = moment(day).format(cfg.timeFormat);
+
+                if ((cfg.days && day > dateLimit) || (event.end.date && me.date == moment(event.end.date).format('L'))) { break; }
 
                 if (!evnts[me.date]) { evnts[me.date] = []; }
                 evnts[me.date].push(me);
               }
             }
           }
-
-
         }
-        if(processedCalendars >= cfg.calendarId.length) {
-          var date;
-          var e = 0;
-          var l;
 
-          for (var d in evnts) {
+        if (processedCalendars >= cfg.calendarId.length) {
+          var dates = Object.keys(evnts);
+          var date, d, l, e = 0;
+
+          dates.sort();
+
+          for (var di = 0; di < dates.length; di++) {
+            d = dates[di];
+
             if (!evnts.hasOwnProperty(d)) { continue; }
             if (e >= cfg.limit) { break; }
 
@@ -316,19 +315,22 @@ function listEvents(oauth2Client) {
               }
             }
           }
-          if(Object.keys(evnts).length == 0) {
+
+          if (Object.keys(evnts).length === 0) {
             console.log('No upcoming events found');
           }
         }
       } else {
         console.log(error.message + ' (calendar: ' + cfg.calendarId[i] +')');
-        if(processedCalendars >= cfg.calendarId.length) {
+
+        if (processedCalendars >= cfg.calendarId.length) {
           footer();
         }
+
         process.exit(1);
       }
 
-      if(processedCalendars >= cfg.calendarId.length) {
+      if (processedCalendars >= cfg.calendarId.length) {
         footer();
       }
     });
