@@ -34,8 +34,10 @@ These are some settings that you can change by setting them in your `~/.bitbarrc
   * Default: `http://localhost:3000`
   * You will probably want to leave this alone. Currently the way it is set up is the user will be redirected to a page where the plugin will be able to capture the autorization code provided by Google.
 
-* `calendarId` - The ID of the calendar you would like to display events from
+* `calendarId` - The ID(s) of the calendar(s) you would like to display events from
   * Default: `primary`
+  * Example: `primary,me@gmail.com`
+  * Can be an array or a comma separated string
 
 * `dateFormat` - The format that dates are displayed in
   * Default: `dddd M/D`
@@ -62,6 +64,10 @@ These are some settings that you can change by setting them in your `~/.bitbarrc
 * `serverPort` - The port to use for the listening server when authorizing the Google account
   * Default: `3000`
   * Should match the port used in `clientRedirect` URL
+
+* `startDate` - The date for the calendar to start pulling events from
+  * Default: Now
+  * Example: `5/1/2017`
 
 * `timeFormat` - The format that times are display in
   * Default: `h:mma`
