@@ -304,7 +304,7 @@ function listEvents(oauth2Client) {
 
             if (evnts[d].length) {
               evnts[d].sort(function(a, b) {
-                return moment(`${a.date} ${a.time}`, 'MM/DD/YYYY H:mma') - moment(`${b.date} ${b.time}`, 'MM/DD/YYYY H:mma');
+                return moment(`${a.date} ${a.time}`, `MM/DD/YYYY ${cfg.timeFormat}`) - moment(`${b.date} ${b.time}`, `MM/DD/YYYY ${cfg.timeFormat}`);
               });
 
               for (var s = 0; (s < evnts[d].length && s < cfg.limit); s++) {
