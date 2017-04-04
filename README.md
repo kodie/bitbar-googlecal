@@ -54,7 +54,7 @@ These are some settings that you can change by setting them in your `~/.bitbarrc
   * Default: `25`
   * If `days` is set to `false`, `limit` decides how many events are displayed
 
-* `showAllOfToday` - Whether to show all of today's events, regardless if they happened earlier today
+* `showAllOfFirstDay` - Whether to show all of the first day's events, regardless if they happened earlier that day
   * Default: `true`
 
 * `showEmptyDays` - Whether to show days that don't have any events
@@ -81,7 +81,7 @@ These are some settings that you can change by setting them in your `~/.bitbarrc
 [googlecal]
 dateFormat=ddd MM/DD/YYYY
 days=false
-showAllOfToday=false
+showAllOfFirstDay=false
 ```
 
 ## License
