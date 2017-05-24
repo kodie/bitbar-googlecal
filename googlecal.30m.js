@@ -112,7 +112,7 @@ if (process.env.BitBar) {
   console.log('---');
 }
 
-var npmDeps = 'fs home-config googleapis google-auth-library http moment open';
+var npmDeps = 'home-config googleapis google-auth-library http moment open';
 var dirHome = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE);
 var dirPlugins = process.argv[1].split('/').slice(0, -1).join('/');
 
