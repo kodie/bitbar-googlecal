@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Changed
 - Fixed bug with newer versions of Node where token file would not be read in the correct encoding thus causing the plugin to fail.
 - If an error happens when trying to get data for a calendar, the error will be displayed at the bottom (above the "about" menu), while the rest of the calendars attempt to load. This way, one calendar failing does not make the rest fail.
+- Plugin will now automatically delete the token file and prompt you with re-authorization instructions when re-authorization is needed.
 - Switched from `http` to `hapi` for HTTP server.
 - CHANGELOG.md formatting.
 
