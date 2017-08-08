@@ -39,13 +39,47 @@ These are some settings that you can change by setting them in your `~/.bitbarrc
   * Example: `primary,me@gmail.com`
   * Can be an array or a comma separated string
 
+* `dateColor` - The font color of the dates
+  * Default: `false`
+  * Example 1: `dateColor="red"`
+  * Example 2: `dateColor="#ff0000"`
+  * Setting to `false` or blank will use the system default
+  * Color names or HEX values can be used
+
+* `dateFont` - The font of the dates
+  * Default: `false`
+  * Example: `dateFont="Verdana"`
+  * Setting to `false` or blank will use the system default
+
 * `dateFormat` - The format that dates are displayed in
   * Default: `dddd M/D`
   * For more information on date formatting, see: https://momentjs.com/docs/#/displaying/format/
 
+* `dateSize` - The font size for the dates
+  * Default: `12`
+  * Example: `dateSize="16"`
+  * Setting to `false` or blank will use the system default
+
 * `days` - The number of days (including today) to display events for
   * Default: `7`
   * Can be set to `false` to display events up to `limit` regardless of the day
+
+* `eventColor` - The font color of the events
+  * Default: `false`
+  * Example 1: `eventColor="green"`
+  * Example 2: `eventColor="#00ff00"`
+  * Setting to `false` or blank will use the system default
+  * Color names or HEX values can be used
+
+* `eventFont` - The font of the events
+  * Default: `false`
+  * Example: `eventFont="Georgia"`
+  * Setting to `false` or blank will use the system default
+
+* `eventSize` - The font size for the dates
+  * Default: `false`
+  * Example: `eventSize="16"`
+  * Setting to `false` or blank will use the system default
 
 * `expandEvents` - Whether to show events that span multiple days on each day
   * Default: `true`
@@ -61,6 +95,10 @@ These are some settings that you can change by setting them in your `~/.bitbarrc
   * Default: `false`
   * This currently only works if `days` is NOT set to `false`
 
+* `serverHost` - The host to use for the listening server when authorizing the Google account
+  * Default: `localhost`
+  * Should match the host used in `clientRedirect` URL
+
 * `serverPort` - The port to use for the listening server when authorizing the Google account
   * Default: `3000`
   * Should match the port used in `clientRedirect` URL
@@ -68,6 +106,16 @@ These are some settings that you can change by setting them in your `~/.bitbarrc
 * `startDate` - The date for the calendar to start pulling events from
   * Default: Now
   * Example: `5/1/2017`
+
+* `textToday` - The text to display next to today's date
+  * Default: ` (Today)`
+  * Example: `textToday=""`
+  * Set to blank to not display any text
+
+* `textTomorrow` - The text to display next to today's date
+  * Default: ` (Tomorrow)`
+  * Example: `textTomorrow=""`
+  * Set to blank to not display any text
 
 * `timeFormat` - The format that times are display in
   * Default: `h:mma`
