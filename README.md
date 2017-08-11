@@ -76,6 +76,11 @@ These are some settings that you can change by setting them in your `~/.bitbarrc
   * Example: `eventFont="Georgia"`
   * Setting to `false` or blank will use the system default
 
+* `eventLength` - The number of characters to truncate events at (including times)
+  * Default: `80`
+  * Example: `eventLength=false`
+  * Setting to `false` or blank will disable truncating
+
 * `eventSize` - The font size for the dates
   * Default: `false`
   * Example: `eventSize="16"`
