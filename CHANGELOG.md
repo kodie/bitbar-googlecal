@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [1.2.1] - 2019-10-20
+
+### Fixed
+- Fixed old code that used old signature of updated APIs
+
+### Changed
+- Changed `npmDeps` to have fixed version for each dependency, so that API usage corresponds to that version
 
 ## [1.2.0] - 2017-08-11
 ### Added

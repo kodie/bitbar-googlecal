@@ -9,7 +9,7 @@
 <bitbar.desc>Shows upcoming events from your Google Calendar - Be sure to read the installation instructions here: https://github.com/kodie/bitbar-googlecal</bitbar.desc>
 <bitbar.image>https://raw.githubusercontent.com/kodie/bitbar-googlecal/master/screenshot.png</bitbar.image>
 <bitbar.dependencies>node, npm</bitbar.dependencies>
-<bitbar.dependencies.npm>npm/home-config, npm/googleapis, npm/google-auth-library, npm/hapi, npm/moment, npm/open</bitbar.dependencies.npm>
+<bitbar.dependencies.npm>npm/home-config, npm/googleapis, npm/@hapi/hapi, npm/moment, npm/open</bitbar.dependencies.npm>
 <bitbar.abouturl>https://github.com/kodie/bitbar-googlecal</bitbar.abouturl>
 */
 
